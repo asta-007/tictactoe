@@ -1,13 +1,24 @@
-"use client";
+import { Metadata } from "next";
+import App from "./app";
+import { APP_NAME, APP_DESCRIPTION, APP_OG_IMAGE_URL } from "~/lib/constants";
+import { getMiniAppEmbedMetadata } from "~/lib/utils";
 
-import React, { useState, useEffect } from 'react';
-import { RotateCcw, Cpu } from 'lucide-react';
+export const revalidate = 300;
 
-export default function TicTacToe() {
-  const [board, setBoard] = useState(Array(9).fill(null));
-  const [isXNext, setIsXNext] = useState(true);
-  const [scores, setScores] = useState({ player: 0, bot: 0, draws: 0 });
-  const [isThinking, setIsThinking] = useState(false);
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: APP_NAME,
+    openGraph: {
+      title: APP_NAME,
+      description: APP_DESCRIPTION,
+      images: [APP_OG_IMAGE_URL],
+    },
+    other: {
+      "fc:frame": JSON.stringify(getMiniAppEmbedMetadata()),
+    },
+  };
+}
 
-  // ... paste the rest of the game code here
+export default function Home() {
+  return (<App />);
 }
