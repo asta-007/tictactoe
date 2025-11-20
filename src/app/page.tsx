@@ -18,6 +18,13 @@ export async function generateMetadata(): Promise<Metadata> {
     },
   };
 }
+export const metadata = {
+  other: {
+    "fc:frame": "vNext",
+    "fc:frame:image": "https://tictactoe-three-peach.vercel.app/frame.png",
+  }
+};
+
 
 export default function Home() {
   return (<App />);
