@@ -1,0 +1,16 @@
+{
+  "version": "1",
+  "accountAssociation": {
+    "header": "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9",
+    "payload": "eyJkb21haW4iOiJ0aWN0YWN0b2UuY29tIn0",
+    "signature": "placeholder_signature"
+  },
+  "miniApp": {
+    "name": "Tic Tac Toe",
+    "description": "Beat the bot!",
+    "icon": "https://via.placeholder.com/192",
+    "homeUrl": "https://tictactoegame.vercel.app",
+    "splashImageUrl": "https://via.placeholder.com/540x720",
+    "splashBackgroundColor": "#9333ea"
+  }
+}
