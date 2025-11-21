@@ -28,7 +28,7 @@ export default function TicTacToe() {
     initializeSdk();
   }, []);
 
-  const calculateWinner = (squares) => {
+  const calculateWinner = (squares: (string | null)[]): { winner: string; line: number[] } | null => {
     const lines = [
       [0, 1, 2],
       [3, 4, 5],
