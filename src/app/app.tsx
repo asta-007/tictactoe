@@ -137,7 +137,7 @@ export default function TicTacToe() {
     }
   }, [winner, isDraw]);
 
-  const handleClick = (index) => {
+  const handleClick = (index: number) => {
     if (board[index] || winner || !isXNext || isThinking) return;
 
     const newBoard = [...board];
