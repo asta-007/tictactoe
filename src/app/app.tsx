@@ -1,46 +1,34 @@
 "use client";
-// /src/app/app.tsx (or components/TicTacToe.tsx)
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { RotateCcw, Cpu } from 'lucide-react';
 
-type Board = Array<'X' | 'O' | null>;
+export default function TicTacToe() {
+  const [board, setBoard] = useState(Array(9).fill(null));
+  const [isXNext, setIsXNext] = useState(true);
+  const [scores, setScores] = useState({ player: 0, bot: 0, draws: 0 });
+  const [isThinking, setIsThinking] = useState(false);
+  const [sdkReady, setSdkReady] = useState(false);
 
-type Scores = {
-  player: number;
-  bot: number;
-  draws: number;
-};
-
-type WinnerResult = {
-  winner: 'X' | 'O';
-  line: number[];
-} | null;
-
-export default function TicTacToe(): React.ReactElement {
-  const [board, setBoard] = useState<Board>(Array(9).fill(null));
-  const [isXNext, setIsXNext] = useState<boolean>(true);
-  const [scores, setScores] = useState<Scores>({ player: 0, bot: 0, draws: 0 });
-  const [isThinking, setIsThinking] = useState<boolean>(false);
-  const [sdkReady, setSdkReady] = useState<boolean>(false);
-
-  // Initialize Farcaster Mini App SDK (if present)
+  // Initialize Farcaster Mini App SDK (optional)
   useEffect(() => {
     const initializeSdk = async () => {
       try {
-        if (typeof window !== 'undefined' && (window as any).sdk?.actions?.ready) {
-          await (window as any).sdk.actions.ready();
+        // Only initialize if running in Farcaster
+        if (typeof window !== 'undefined' && window.sdk) {
+          // Just mark as ready, don't request wallet
+          await window.sdk.actions.ready();
         }
         setSdkReady(true);
       } catch (error) {
-        console.error('SDK initialization error:', error);
+        // Continue even if SDK fails - game works standalone
         setSdkReady(true);
       }
     };
-
+    
     initializeSdk();
   }, []);
 
-  const calculateWinner = (squares: Board): WinnerResult => {
+  const calculateWinner = (squares) => {
     const lines = [
       [0, 1, 2],
       [3, 4, 5],
@@ -51,19 +39,21 @@ export default function TicTacToe(): React.ReactElement {
       [0, 4, 8],
       [2, 4, 6],
     ];
-
-    for (const [a, b, c] of lines) {
+    
+    for (let i = 0; i < lines.length; i++) {
+      const [a, b, c] = lines[i];
       if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-        return { winner: squares[a] as 'X' | 'O', line: [a, b, c] };
+        return { winner: squares[a], line: lines[i] };
       }
     }
-
     return null;
   };
 
+  // Moved inside useEffect to avoid dependency issues
+
   const result = calculateWinner(board);
   const winner = result?.winner;
-  const winningLine = result?.line ?? [];
+  const winningLine = result?.line || [];
   const isBoardFull = board.every(cell => cell !== null);
   const isDraw = !winner && isBoardFull;
 
@@ -71,13 +61,9 @@ export default function TicTacToe(): React.ReactElement {
   useEffect(() => {
     if (!isXNext && !winner && !isDraw) {
       setIsThinking(true);
-
       const timer = setTimeout(() => {
-        const emptyIndices = board
-          .map((val, idx) => (val === null ? idx : null))
-          .filter((v): v is number => v !== null);
-
-        let botMove: number | undefined;
+        const emptyIndices = board.map((val, idx) => val === null ? idx : null).filter(val => val !== null);
+        let botMove;
 
         // Try to win
         for (const i of emptyIndices) {
@@ -125,18 +111,17 @@ export default function TicTacToe(): React.ReactElement {
           newBoard[botMove] = 'O';
           setBoard(newBoard);
           setIsXNext(true);
-
+          
           const newResult = calculateWinner(newBoard);
-          if (newResult?.winner === 'O') {
+          if (newResult) {
             setScores(prev => ({ ...prev, bot: prev.bot + 1 }));
           } else if (newBoard.every(cell => cell !== null)) {
             setScores(prev => ({ ...prev, draws: prev.draws + 1 }));
           }
         }
-
         setIsThinking(false);
       }, 500);
-
+      
       return () => clearTimeout(timer);
     }
   }, [isXNext, board, winner, isDraw]);
@@ -147,12 +132,12 @@ export default function TicTacToe(): React.ReactElement {
       const timer = setTimeout(() => {
         resetGame();
       }, 2000);
-
+      
       return () => clearTimeout(timer);
     }
   }, [winner, isDraw]);
 
-  const handleClick = (index: number) => {
+  const handleClick = (index) => {
     if (board[index] || winner || !isXNext || isThinking) return;
 
     const newBoard = [...board];
@@ -160,7 +145,7 @@ export default function TicTacToe(): React.ReactElement {
     setBoard(newBoard);
 
     const newResult = calculateWinner(newBoard);
-    if (newResult?.winner === 'X') {
+    if (newResult) {
       setScores(prev => ({ ...prev, player: prev.player + 1 }));
       setIsXNext(true);
     } else if (newBoard.every(cell => cell !== null)) {
@@ -196,7 +181,7 @@ export default function TicTacToe(): React.ReactElement {
         <h1 className="text-4xl font-bold text-center mb-2 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
           Tic Tac Toe
         </h1>
-
+        
         {/* Score Board */}
         <div className="grid grid-cols-3 gap-3 mb-6 text-center">
           <div className="bg-blue-100 rounded-lg p-3">
@@ -226,14 +211,18 @@ export default function TicTacToe(): React.ReactElement {
               )}
             </div>
           ) : isDraw ? (
-            <div className="text-2xl font-bold text-gray-600">It&apos;s a Draw!</div>
+            <div className="text-2xl font-bold text-gray-600">
+              It&apos;s a Draw!
+            </div>
           ) : isThinking ? (
             <div className="text-xl font-semibold text-red-600 flex items-center justify-center gap-2">
               <Cpu className="animate-pulse" size={24} />
               Bot is thinking...
             </div>
           ) : (
-            <div className="text-xl font-semibold text-blue-600">Your turn!</div>
+            <div className="text-xl font-semibold text-blue-600">
+              Your turn!
+            </div>
           )}
         </div>
 
@@ -280,4 +269,3 @@ export default function TicTacToe(): React.ReactElement {
     </div>
   );
 }
-
