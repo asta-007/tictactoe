@@ -1,7 +1,7 @@
-// app/api/frame/route.ts
+
 import { NextResponse } from 'next/server';
 
-const IMAGE_URL = https://tictactoe-three-peach.vercel.app/frame.png';
+const IMAGE_URL = 'https://tictactoe-three-peach.vercel.app/frame.png';
 
 
 export async function GET() {
