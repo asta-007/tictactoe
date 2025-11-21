@@ -1,16 +1,19 @@
 {
-  "version": "1",
-  "accountAssociation": {
-    "header": "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9",
-    "payload": "eyJkb21haW4iOiJ0aWN0YWN0b2UuY29tIn0",
-    "signature": "placeholder"
-  },
-  "miniApp": {
-    "name": "Tic Tac Toe",
-    "description": "Play Tic Tac Toe against a bot!",
-    "icon": "https://tictactoe-three-peach.vercel.app/icon.png",
-    "homeUrl": "https://tictactoe-three-peach.vercel.app/",
+  "frame": {
+    "name": "Tic Tac Toe Game",
+    "version": "1",
+    "iconUrl": "https://tictactoe-three-peach.vercel.app/icon.png",
+    "homeUrl": "https://tictactoe-three-peach.vercel.app",
+    "imageUrl": "https://tictactoe-three-peach.vercel.app/image.png",
     "splashImageUrl": "https://tictactoe-three-peach.vercel.app/splash.png",
-    "splashBackgroundColor": "#9333ea"
+    "splashBackgroundColor": "#62003A",
+    "webhookUrl": "https://tictactoe-three-peach.vercel.app/api/webhook",
+    "subtitle": "Play Now",
+    "description": "A fast and fun Tic Tac Toe game where you challenge an AI bot. Make your move, watch the bot think, and try to outsmart it. Simple, colorful, and addictive.",
+    "primaryCategory": "games"
+  },
+  "accountAssociation": {
+    "header": "",
+    "payload": "",
+    "signature": ""
   }
-}
