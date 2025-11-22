@@ -176,34 +176,34 @@ export default function TicTacToe() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400 flex items-center justify-center p-4">
-      <div className="bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full">
-        <h1 className="text-4xl font-bold text-center mb-2 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+    <div className="w-full h-screen bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400 flex items-center justify-center p-4 overflow-auto">
+      <div className="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-sm">
+        <h1 className="text-3xl font-bold text-center mb-3 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
           Tic Tac Toe
         </h1>
         
         {/* Score Board */}
-        <div className="grid grid-cols-3 gap-3 mb-6 text-center">
-          <div className="bg-blue-100 rounded-lg p-3">
+        <div className="grid grid-cols-3 gap-2 mb-4 text-center text-sm">
+          <div className="bg-blue-100 rounded-lg p-2">
             <div className="text-lg font-medium text-blue-600">You (X)</div>
-            <div className="text-2xl font-bold text-gray-700">{scores.player}</div>
+            <div className="text-xl font-bold text-gray-700">{scores.player}</div>
           </div>
-          <div className="bg-gray-100 rounded-lg p-3">
-            <div className="text-sm font-medium text-gray-600">Draws</div>
+          <div className="bg-gray-100 rounded-lg p-2">
+            <div className="text-xs font-medium text-gray-600">Draws</div>
             <div className="text-lg font-semibold text-gray-700">{scores.draws}</div>
           </div>
-          <div className="bg-red-100 rounded-lg p-3">
+          <div className="bg-red-100 rounded-lg p-2">
             <div className="text-lg font-medium text-red-600 flex items-center justify-center gap-1">
-              <Cpu size={16} /> Bot (O)
+              <Cpu size={14} /> Bot (O)
             </div>
-            <div className="text-2xl font-bold text-gray-700">{scores.bot}</div>
+            <div className="text-xl font-bold text-gray-700">{scores.bot}</div>
           </div>
         </div>
 
         {/* Status */}
-        <div className="text-center mb-6">
+        <div className="text-center mb-4">
           {winner ? (
-            <div className="text-2xl font-bold">
+            <div className="text-lg font-bold">
               {winner === 'X' ? (
                 <span className="text-green-600">🎉 You Win! 🎉</span>
               ) : (
@@ -211,23 +211,23 @@ export default function TicTacToe() {
               )}
             </div>
           ) : isDraw ? (
-            <div className="text-2xl font-bold text-gray-600">
+            <div className="text-lg font-bold text-gray-600">
               It&apos;s a Draw!
             </div>
           ) : isThinking ? (
-            <div className="text-xl font-semibold text-red-600 flex items-center justify-center gap-2">
-              <Cpu className="animate-pulse" size={24} />
-              Bot is thinking...
+            <div className="text-sm font-semibold text-red-600 flex items-center justify-center gap-2">
+              <Cpu className="animate-pulse" size={18} />
+              Bot thinking...
             </div>
           ) : (
-            <div className="text-xl font-semibold text-blue-600">
+            <div className="text-sm font-semibold text-blue-600">
               Your turn!
             </div>
           )}
         </div>
 
         {/* Game Board */}
-        <div className="grid grid-cols-3 gap-3 mb-6">
+        <div className="grid grid-cols-3 gap-2 mb-4">
           {board.map((cell, index) => {
             const isWinningCell = winningLine.includes(index);
             return (
@@ -235,7 +235,7 @@ export default function TicTacToe() {
                 key={index}
                 onClick={() => handleClick(index)}
                 disabled={isThinking}
-                className={`aspect-square text-5xl font-bold rounded-xl transition-all duration-200 
+                className={`aspect-square text-4xl font-bold rounded-lg transition-all duration-200 
                   ${cell || isThinking ? 'cursor-default' : 'cursor-pointer hover:bg-gray-100'}
                   ${isWinningCell ? 'bg-green-200 scale-105' : 'bg-gray-50'}
                   ${cell === 'X' ? 'text-blue-600' : 'text-red-600'}
