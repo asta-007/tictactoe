@@ -1,15 +1,12 @@
 "use client";
 
-import { useEffect } from 'react';
 import TicTacToe from './app';
 
 export default function Page() {
-  useEffect(() => {
-    // Call SDK ready at page level too
-    if (typeof window !== 'undefined' && window.sdk) {
-      window.sdk.actions.ready().catch(() => {});
-    }
-  }, []);
+  // Call SDK ready immediately
+  if (typeof window !== 'undefined' && (window as any).sdk) {
+    (window as any).sdk.actions.ready().catch(() => {});
+  }
 
   return <TicTacToe />;
 }
