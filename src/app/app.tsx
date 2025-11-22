@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState, useEffect } from 'react';
 import { RotateCcw, Cpu } from 'lucide-react';
 
@@ -9,20 +10,19 @@ export default function TicTacToe() {
   const [isThinking, setIsThinking] = useState(false);
   const [sdkReady, setSdkReady] = useState(false);
 
-  // Initialize Farcaster Mini App SDK (optional)
+  // Initialize Farcaster Mini App SDK
   useEffect(() => {
     const initializeSdk = async () => {
       try {
-        // Only initialize if running in Farcaster
+        // Check if SDK is available (only in Farcaster environment)
         if (typeof window !== 'undefined' && window.sdk) {
-          // Just mark as ready, don't request wallet
           await window.sdk.actions.ready();
+          console.log('SDK ready called');
         }
-        setSdkReady(true);
       } catch (error) {
-        // Continue even if SDK fails - game works standalone
-        setSdkReady(true);
+        console.log('SDK error:', error);
       }
+      setSdkReady(true);
     };
     
     initializeSdk();
