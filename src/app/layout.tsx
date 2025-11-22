@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
+import './globals.css';
 
 export const metadata: Metadata = {
   title: 'Tic Tac Toe',
-  description: 'Play Tic Tac Toe against a bot',
+  description: 'Play Tic Tac Toe against an bot',
 };
 
 export default function RootLayout({
